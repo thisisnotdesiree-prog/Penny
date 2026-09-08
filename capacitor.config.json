@@ -1,0 +1,6 @@
+{
+  "appId": "com.pennycounter.app",
+  "appName": "Penny Counter",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
