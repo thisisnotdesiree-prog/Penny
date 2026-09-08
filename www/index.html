@@ -1,154 +1,239 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
-    <meta name="theme-color" content="#f5ead8">
-
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- iPhone / iPad -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Penny Counter">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Penny Counter</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
+```
+<style>
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f5ead7;
+        font-family: Arial, sans-serif;
+        overflow: hidden;
+    }
+
+    .app {
+        width: 100%;
+        max-width: 430px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+    }
+
+    h1 {
+        margin: 0 0 10px;
+        font-size: 34px;
+        color: #5b3a29;
+    }
+
+    .count {
+        font-size: 64px;
+        font-weight: bold;
+        color: #7b4b2a;
+        margin-bottom: 25px;
+    }
+
+    /* Penny display */
+    .penny-container {
+        width: 100%;
+        min-height: 115px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 18px;
+        margin-bottom: 35px;
+    }
+
+    .penny {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle at 35% 30%,
+            #e7a96b 0%,
+            #c9783e 35%,
+            #9b4f25 70%,
+            #71351b 100%
+        );
+        border: 5px solid #7c3f20;
+        box-shadow:
+            inset 0 0 0 3px rgba(255, 210, 150, 0.35),
+            0 5px 10px rgba(0, 0, 0, 0.25);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #71351b;
+        font-weight: bold;
+        font-size: 34px;
+        text-shadow: 1px 1px rgba(255, 200, 140, 0.35);
+        animation: pennyAppear 0.2s ease-out;
+    }
+
+    .penny::after {
+        content: "¢";
+        opacity: 0.65;
+    }
+
+    @keyframes pennyAppear {
+        from {
+            transform: scale(0.4) rotate(-20deg);
+            opacity: 0;
         }
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            min-height: 100dvh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #f5ead8;
-            font-family: Arial, sans-serif;
+        to {
+            transform: scale(1) rotate(0deg);
+            opacity: 1;
         }
+    }
 
-        .container {
-            text-align: center;
-        }
+    .buttons {
+        display: flex;
+        gap: 25px;
+    }
 
-        h1 {
-            margin-bottom: 30px;
-            color: #4a2c1a;
-            font-size: 32px;
-        }
+    button {
+        width: 90px;
+        height: 70px;
+        border: none;
+        border-radius: 18px;
+        font-size: 38px;
+        font-weight: bold;
+        color: white;
+        background: #8b5a3c;
+        box-shadow: 0 5px 0 #5b3a29;
+        cursor: pointer;
+        touch-action: manipulation;
+    }
 
-        .counter {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-        }
+    button:active {
+        transform: translateY(4px);
+        box-shadow: 0 1px 0 #5b3a29;
+    }
 
-        button {
-            width: 65px;
-            height: 65px;
-            border: none;
-            border-radius: 50%;
-            background: #8b5e3c;
-            color: white;
-            font-size: 36px;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            -webkit-tap-highlight-color: transparent;
-        }
+    button:disabled {
+        opacity: 0.4;
+        cursor: default;
+        transform: none;
+        box-shadow: 0 5px 0 #5b3a29;
+    }
 
-        button:active {
-            transform: scale(0.95);
-        }
+    .message {
+        margin-top: 25px;
+        min-height: 24px;
+        color: #7b4b2a;
+        font-size: 16px;
+    }
+</style>
+```
 
-        button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-
-        #count {
-            min-width: 100px;
-            font-size: 64px;
-            font-weight: bold;
-            color: #4a2c1a;
-        }
-
-        .label {
-            margin-top: 15px;
-            font-size: 20px;
-            color: #6b4a35;
-        }
-    </style>
 </head>
 
 <body>
 
-    <div class="container">
-        <h1>Penny Counter</h1>
+<div class="app">
 
-        <div class="counter">
-            <button id="subtract">−</button>
+```
+<h1>Penny Counter</h1>
 
-            <div id="count">0</div>
+<div class="count" id="count">0</div>
 
-            <button id="add">+</button>
-        </div>
+<div class="penny-container" id="pennies"></div>
 
-        <div class="label">pennies</div>
-    </div>
+<div class="buttons">
+    <button id="subtract" aria-label="Subtract penny">−</button>
+    <button id="add" aria-label="Add penny">+</button>
+</div>
 
-    <script>
-        let count = parseInt(localStorage.getItem("pennyCount")) || 0;
+<div class="message" id="message"></div>
+```
 
-        const countDisplay = document.getElementById("count");
-        const addButton = document.getElementById("add");
-        const subtractButton = document.getElementById("subtract");
+</div>
 
-        function updateCount() {
-            countDisplay.textContent = count;
+<script>
+    const MAX_PENNIES = 3;
+    const STORAGE_KEY = "pennyCount";
 
-            // Save the number on the device.
-            localStorage.setItem("pennyCount", count);
+    const countDisplay = document.getElementById("count");
+    const pennyContainer = document.getElementById("pennies");
+    const addButton = document.getElementById("add");
+    const subtractButton = document.getElementById("subtract");
+    const message = document.getElementById("message");
 
-            addButton.disabled = count >= 3;
-            subtractButton.disabled = count <= 0;
+    // Load saved penny count
+    let pennyCount = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+
+    // If nothing was saved or the saved value is invalid, start at 0
+    if (isNaN(pennyCount) || pennyCount < 0 || pennyCount > MAX_PENNIES) {
+        pennyCount = 0;
+    }
+
+    function saveCount() {
+        localStorage.setItem(STORAGE_KEY, pennyCount.toString());
+    }
+
+    function updateDisplay() {
+        // Update number
+        countDisplay.textContent = pennyCount;
+
+        // Clear existing penny visuals
+        pennyContainer.innerHTML = "";
+
+        // Add the correct number of penny visuals
+        for (let i = 0; i < pennyCount; i++) {
+            const penny = document.createElement("div");
+            penny.className = "penny";
+            pennyContainer.appendChild(penny);
         }
 
-        addButton.addEventListener("click", function () {
-            if (count < 3) {
-                count++;
-                updateCount();
-            }
-        });
+        // Enable/disable buttons
+        subtractButton.disabled = pennyCount <= 0;
+        addButton.disabled = pennyCount >= MAX_PENNIES;
 
-        subtractButton.addEventListener("click", function () {
-            if (count > 0) {
-                count--;
-                updateCount();
-            }
-        });
-
-        updateCount();
-
-        // Register the service worker for offline/PWA support.
-        if ("serviceWorker" in navigator) {
-            window.addEventListener("load", function () {
-                navigator.serviceWorker.register("sw.js")
-                    .catch(function (error) {
-                        console.log("Service Worker registration failed:", error);
-                    });
-            });
+        // Message
+        if (pennyCount >= MAX_PENNIES) {
+            message.textContent = "Maximum: 3 pennies";
+        } else {
+            message.textContent = "";
         }
-    </script>
+    }
+
+    // Add penny
+    addButton.addEventListener("click", function () {
+        if (pennyCount < MAX_PENNIES) {
+            pennyCount++;
+            saveCount();
+            updateDisplay();
+        }
+    });
+
+    // Subtract penny
+    subtractButton.addEventListener("click", function () {
+        if (pennyCount > 0) {
+            pennyCount--;
+            saveCount();
+            updateDisplay();
+        }
+    });
+
+    // Display saved count when the app opens
+    updateDisplay();
+</script>
 
 </body>
-</html>
-```
+    </html>
+    
