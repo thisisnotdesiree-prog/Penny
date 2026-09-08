@@ -2,326 +2,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Penny Counter</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penny Counter</title>
 
-<style>
-    * {
-        box-sizing: border-box;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #f5ead8;
-        font-family: Arial, sans-serif;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f5ead7;
+            font-family: Arial, sans-serif;
+            color: #3b2a1f;
+        }
 
-    .app {
-        width: 100%;
-        max-width: 600px;
-        min-height: 100vh;
-        padding: 40px 20px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+        .app {
+            width: 100%;
+            max-width: 420px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+        }
 
-    h1 {
-        margin: 0 0 35px;
-        font-size: 36px;
-        color: #4b2e1f;
-    }
+        h1 {
+            margin: 0 0 35px;
+            font-size: 38px;
+            font-weight: 700;
+        }
 
-    .penny-container {
-        width: 100%;
-        min-height: 150px;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 35px;
-    }
+        .counter {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
 
-    .penny {
-        width: 85px;
-        height: 85px;
-        border-radius: 50%;
-        background:
-            radial-gradient(circle at 35% 30%,
-                #e8a96a 0%,
-                #bd6d32 45%,
-                #8c461f 100%);
-        border: 5px solid #743816;
-        box-shadow:
-            inset 0 0 0 3px #d98a4b,
-            3px 4px 7px rgba(0, 0, 0, 0.25);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #6b3218;
-        font-weight: bold;
-        font-size: 34px;
-        text-shadow: 1px 1px rgba(255,255,255,0.25);
-        flex-shrink: 0;
-    }
+        .pennies {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            min-height: 105px;
+            margin-bottom: 35px;
+        }
 
-    .buttons {
-        display: flex;
-        gap: 25px;
-        align-items: center;
-    }
+        .penny {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #b87333;
+            border: 5px solid #8c5426;
+            box-shadow:
+                inset 0 0 0 3px #d99a5b,
+                0 5px 10px rgba(0, 0, 0, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #6b3d1c;
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-    button {
-        width: 70px;
-        height: 60px;
-        border: none;
-        border-radius: 15px;
-        background: #6b402b;
-        color: white;
-        font-size: 36px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 4px 0 #452819;
-        transition: transform 0.1s, box-shadow 0.1s;
-    }
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
 
-    button:active {
-        transform: translateY(4px);
-        box-shadow: 0 0 0 #452819;
-    }
+        button {
+            width: 150px;
+            height: 60px;
+            border: none;
+            border-radius: 14px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            background: #6b4f3a;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s, opacity 0.1s;
+        }
 
-    .count {
-        margin-top: 25px;
-        font-size: 22px;
-        color: #4b2e1f;
-        font-weight: bold;
-    }
-</style>
+        button:active {
+            transform: scale(0.96);
+        }
+
+        button:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="app">
+    <main class="app">
 
-    <h1>Penny Counter</h1>
+        <h1>Penny Counter</h1>
 
-    <div id="pennyContainer" class="penny-container"></div>
+        <div class="counter">
+            <span id="count">0</span> / 3
+        </div>
 
-    <div class="buttons">
-        <button id="subtract" aria-label="Remove a penny">−</button>
-        <button id="add" aria-label="Add a penny">+</button>
-    </div>
+        <div class="pennies" id="pennies"></div>
 
-    <div id="count" class="count">3 pennies</div>
+        <div class="buttons">
+            <button id="removeButton" onclick="removePenny()">
+                − Remove
+            </button>
 
-</div>
+            <button id="addButton" onclick="addPenny()">
+                + Add
+            </button>
+        </div>
 
-<script>
-    let pennyCount = 3;
+    </main>
 
-    const pennyContainer = document.getElementById("pennyContainer");
-    const countDisplay = document.getElementById("count");
-    const addButton = document.getElementById("add");
-    const subtractButton = document.getElementById("subtract");
+    <script>
+        let count = 0;
+        const maximum = 3;
 
-    function drawPennies() {
-        pennyContainer.innerHTML = "";
+        const countDisplay = document.getElementById("count");
+        const penniesDisplay = document.getElementById("pennies");
+        const addButton = document.getElementById("addButton");
+        const removeButton = document.getElementById("removeButton");
 
-        for (let i = 0; i < pennyCount; i++) {
-            const penny = document.createElement("div");
-            penny.className = "penny";
-            penny.textContent = "1¢";
-            pennyContainer.appendChild(penny);
+        function updateDisplay() {
+            countDisplay.textContent = count;
+
+            penniesDisplay.innerHTML = "";
+
+            for (let i = 0; i < count; i++) {
+                const penny = document.createElement("div");
+                penny.className = "penny";
+                penny.textContent = "1¢";
+                penniesDisplay.appendChild(penny);
+            }
+
+            addButton.disabled = count >= maximum;
+            removeButton.disabled = count <= 0;
         }
 
-        countDisplay.textContent =
-            pennyCount === 1
-                ? "1 penny"
-                : `${pennyCount} pennies`;
-    }
-
-    addButton.addEventListener("click", () => {
-        pennyCount++;
-        drawPennies();
-    });
-
-    subtractButton.addEventListener("click", () => {
-        if (pennyCount > 0) {
-            pennyCount--;
-            drawPennies();
+        function addPenny() {
+            if (count < maximum) {
+                count++;
+                updateDisplay();
+            }
         }
-    });
 
-    drawPennies();
-</script>
+        function removePenny() {
+            if (count > 0) {
+                count--;
+                updateDisplay();
+            }
+        }
+
+        updateDisplay();
+    </script>
 
 </body>
 </html>
 ```
-        font-size: 2.2rem;
-    }
-
-    .total {
-        font-size: 3rem;
-        font-weight: bold;
-        margin: 25px 0;
-    }
-
-    .counter {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-    }
-
-    button {
-        border: none;
-        border-radius: 12px;
-        padding: 15px;
-        font-size: 1.1rem;
-        cursor: pointer;
-        background: #d89b5b;
-        color: white;
-    }
-
-    button:active {
-        transform: scale(0.97);
-    }
-
-    .amount {
-        font-size: 1.3rem;
-        margin-top: 8px;
-        font-weight: bold;
-    }
-
-    .reset {
-        margin-top: 20px;
-        background: #8b5e3c;
-        width: 100%;
-    }
-</style>
-
-</head>
-
-<body>
-
-<div class="container">
-
-```
-<h1>🪙 Penny Counter</h1>
-
-<div class="total" id="total">$0.00</div>
-
-<div class="counter">
-
-    <button onclick="changePennies(1)">
-        +1 Penny
-        <div class="amount" id="pennies">0</div>
-    </button>
-
-    <button onclick="changePennies(5)">
-        +5 Pennies
-        <div class="amount" id="nickels">0</div>
-    </button>
-
-    <button onclick="changePennies(10)">
-        +10 Pennies
-        <div class="amount" id="dimes">0</div>
-    </button>
-
-    <button onclick="changePennies(25)">
-        +25 Pennies
-        <div class="amount" id="quarters">0</div>
-    </button>
-
-    <button onclick="changePennies(50)">
-        +50 Pennies
-        <div class="amount" id="halfDollars">0</div>
-    </button>
-
-    <button onclick="changePennies(100)">
-        +100 Pennies
-        <div class="amount" id="dollars">0</div>
-    </button>
-
-</div>
-
-<button class="reset" onclick="resetCounter()">
-    Reset
-</button>
-```
-
-</div>
-
-<script>
-    let totalPennies = 0;
-
-    let counts = {
-        pennies: 0,
-        nickels: 0,
-        dimes: 0,
-        quarters: 0,
-        halfDollars: 0,
-        dollars: 0
-    };
-
-    function changePennies(amount) {
-        totalPennies += amount;
-
-        if (amount === 1) counts.pennies++;
-        if (amount === 5) counts.nickels++;
-        if (amount === 10) counts.dimes++;
-        if (amount === 25) counts.quarters++;
-        if (amount === 50) counts.halfDollars++;
-        if (amount === 100) counts.dollars++;
-
-        updateDisplay();
-    }
-
-    function updateDisplay() {
-        document.getElementById("total").textContent =
-            "$" + (totalPennies / 100).toFixed(2);
-
-        document.getElementById("pennies").textContent =
-            counts.pennies;
-
-        document.getElementById("nickels").textContent =
-            counts.nickels;
-
-        document.getElementById("dimes").textContent =
-            counts.dimes;
-
-        document.getElementById("quarters").textContent =
-            counts.quarters;
-
-        document.getElementById("halfDollars").textContent =
-            counts.halfDollars;
-
-        document.getElementById("dollars").textContent =
-            counts.dollars;
-    }
-
-    function resetCounter() {
-        totalPennies = 0;
-
-        counts = {
-            pennies: 0,
-            nickels: 0,
-            dimes: 0,
-            quarters: 0,
-            halfDollars: 0,
-            dollars: 0
-        };
-
-        updateDisplay();
-    }
-</script>
-
-</body>
-</html>
