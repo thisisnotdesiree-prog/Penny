@@ -1,0 +1,12 @@
+```json
+{
+    "name": "Penny Counter",
+    "short_name": "Penny Counter",
+    "description": "A simple penny counter with a maximum of three pennies.",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#f5ead8",
+    "theme_color": "#f5ead8",
+    "orientation": "portrait"
+}
+```
