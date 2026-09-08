@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Penny Counter</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f5ead8;
+        font-family: Arial, sans-serif;
+        color: #3b2a20;
+    }
+
+    .container {
+        width: 92%;
+        max-width: 500px;
+        background: #fffaf2;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        text-align: center;
+    }
+
+    h1 {
+        margin-top: 0;
+        font-size: 2.2rem;
+    }
+
+    .total {
+        font-size: 3rem;
+        font-weight: bold;
+        margin: 25px 0;
+    }
+
+    .counter {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    button {
+        border: none;
+        border-radius: 12px;
+        padding: 15px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        background: #d89b5b;
+        color: white;
+    }
+
+    button:active {
+        transform: scale(0.97);
+    }
+
+    .amount {
+        font-size: 1.3rem;
+        margin-top: 8px;
+        font-weight: bold;
+    }
+
+    .reset {
+        margin-top: 20px;
+        background: #8b5e3c;
+        width: 100%;
+    }
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+```
+<h1>🪙 Penny Counter</h1>
+
+<div class="total" id="total">$0.00</div>
+
+<div class="counter">
+
+    <button onclick="changePennies(1)">
+        +1 Penny
+        <div class="amount" id="pennies">0</div>
+    </button>
+
+    <button onclick="changePennies(5)">
+        +5 Pennies
+        <div class="amount" id="nickels">0</div>
+    </button>
+
+    <button onclick="changePennies(10)">
+        +10 Pennies
+        <div class="amount" id="dimes">0</div>
+    </button>
+
+    <button onclick="changePennies(25)">
+        +25 Pennies
+        <div class="amount" id="quarters">0</div>
+    </button>
+
+    <button onclick="changePennies(50)">
+        +50 Pennies
+        <div class="amount" id="halfDollars">0</div>
+    </button>
+
+    <button onclick="changePennies(100)">
+        +100 Pennies
+        <div class="amount" id="dollars">0</div>
+    </button>
+
+</div>
+
+<button class="reset" onclick="resetCounter()">
+    Reset
+</button>
+```
+
+</div>
+
+<script>
+    let totalPennies = 0;
+
+    let counts = {
+        pennies: 0,
+        nickels: 0,
+        dimes: 0,
+        quarters: 0,
+        halfDollars: 0,
+        dollars: 0
+    };
+
+    function changePennies(amount) {
+        totalPennies += amount;
+
+        if (amount === 1) counts.pennies++;
+        if (amount === 5) counts.nickels++;
+        if (amount === 10) counts.dimes++;
+        if (amount === 25) counts.quarters++;
+        if (amount === 50) counts.halfDollars++;
+        if (amount === 100) counts.dollars++;
+
+        updateDisplay();
+    }
+
+    function updateDisplay() {
+        document.getElementById("total").textContent =
+            "$" + (totalPennies / 100).toFixed(2);
+
+        document.getElementById("pennies").textContent =
+            counts.pennies;
+
+        document.getElementById("nickels").textContent =
+            counts.nickels;
+
+        document.getElementById("dimes").textContent =
+            counts.dimes;
+
+        document.getElementById("quarters").textContent =
+            counts.quarters;
+
+        document.getElementById("halfDollars").textContent =
+            counts.halfDollars;
+
+        document.getElementById("dollars").textContent =
+            counts.dollars;
+    }
+
+    function resetCounter() {
+        totalPennies = 0;
+
+        counts = {
+            pennies: 0,
+            nickels: 0,
+            dimes: 0,
+            quarters: 0,
+            halfDollars: 0,
+            dollars: 0
+        };
+
+        updateDisplay();
+    }
+</script>
+
+</body>
+</html>
