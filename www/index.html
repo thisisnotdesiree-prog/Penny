@@ -2,193 +2,292 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+
 <meta name="viewport"
-      content="width=device-width, initial-scale=1.0,
-               maximum-scale=1.0, user-scalable=no">
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
 
 <title>Spencer's Beard</title>
 
 <style>
+
+/* =========================================================
+   BASIC PAGE
+========================================================= */
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
+html,
+body {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
 }
 
 body {
-    background: #f4e5ce;
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    background:
+        linear-gradient(
+            #f7e8ca 0%,
+            #f1dcb9 100%
+        );
+
+    font-family:
+        "Comic Sans MS",
+        "Comic Sans",
+        cursive;
+
     touch-action: manipulation;
 }
 
-/* -------------------------
-   GAME
-------------------------- */
-
 .game {
+    position: relative;
+
     width: 100%;
     height: 100vh;
+
     max-width: 600px;
+
     margin: auto;
-    position: relative;
+
     overflow: hidden;
 }
 
+
+/* =========================================================
+   TITLE
+========================================================= */
+
 .title {
     position: absolute;
-    top: 10px;
+
+    top: 8px;
     left: 0;
+
     width: 100%;
+
     text-align: center;
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
-    font-size: clamp(28px, 8vw, 44px);
+
+    font-family:
+        "Comic Sans MS",
+        "Comic Sans",
+        cursive;
+
+    font-size: clamp(27px, 8vw, 45px);
+
     font-weight: bold;
-    color: #3a2418;
-    text-shadow: 2px 2px #d2b896;
-    z-index: 100;
+
+    color: #4a2d1c;
+
+    text-shadow:
+        2px 2px 0 #d6bd97;
+
+    z-index: 200;
 }
 
-.help {
+.instructions {
     position: absolute;
-    top: 61px;
+
+    top: 58px;
     left: 0;
+
     width: 100%;
+
     text-align: center;
-    color: #684a35;
+
+    color: #76553b;
+
     font-size: 14px;
-    z-index: 100;
+
+    z-index: 200;
 }
 
-/* -------------------------
-   MAN
-------------------------- */
 
-.man {
+/* =========================================================
+   CHARACTER
+========================================================= */
+
+.character {
     position: absolute;
-    width: 220px;
-    height: 510px;
+
+    width: 260px;
+    height: 520px;
 
     left: 50%;
-    top: 88px;
+    top: 82px;
 
     transform: translateX(-50%);
 
     image-rendering: pixelated;
 }
 
-/* Hair */
+
+/* =========================================================
+   HAIR
+========================================================= */
 
 .hair {
     position: absolute;
-    left: 48px;
-    top: 4px;
-    width: 124px;
-    height: 70px;
 
-    background: #4b2b19;
+    left: 55px;
+    top: 3px;
+
+    width: 150px;
+    height: 78px;
+
+    background: #51301c;
+
+    border: 5px solid #302016;
+
+    z-index: 4;
+}
+
+/* Hair chunks */
+
+.hair::before {
+    content: "";
+
+    position: absolute;
+
+    left: -12px;
+    top: 18px;
+
+    width: 18px;
+    height: 48px;
+
+    background: #51301c;
 
     box-shadow:
-        -8px 12px #4b2b19,
-        8px 8px #4b2b19,
-        -2px -5px #4b2b19,
-        18px -7px #4b2b19,
-        44px -8px #4b2b19,
-        72px -4px #4b2b19;
+        156px 2px #51301c,
+        142px -13px #51301c,
+        18px -12px #51301c,
+        48px -17px #51301c,
+        82px -12px #51301c;
 }
+
+/* Hair highlights */
 
 .hair::after {
     content: "";
+
     position: absolute;
 
-    left: 12px;
-    top: 8px;
+    left: 18px;
+    top: 12px;
 
-    width: 18px;
-    height: 13px;
+    width: 20px;
+    height: 12px;
 
-    background: #6a4327;
+    background: #704426;
 
     box-shadow:
-        30px -3px #6a4327,
-        59px 2px #6a4327,
-        87px -2px #6a4327;
+        39px -5px #704426,
+        76px 0 #704426,
+        107px -4px #704426;
 }
 
-/* Face */
 
-.face {
-    position: absolute;
-
-    left: 50px;
-    top: 54px;
-
-    width: 120px;
-    height: 142px;
-
-    background: #e3a575;
-
-    border: 4px solid #39251b;
-
-    z-index: 2;
-}
-
-/* Ears */
+/* =========================================================
+   EARS
+========================================================= */
 
 .ear {
     position: absolute;
 
-    top: 106px;
+    top: 105px;
 
-    width: 19px;
-    height: 39px;
+    width: 25px;
+    height: 43px;
 
-    background: #d79668;
+    background: #dda074;
 
-    border: 4px solid #39251b;
+    border: 4px solid #3c281d;
 
-    z-index: 1;
+    z-index: 2;
 }
 
 .ear.left {
-    left: 34px;
+    left: 39px;
 }
 
 .ear.right {
-    right: 34px;
+    right: 39px;
 }
 
-/* -------------------------
+
+/* =========================================================
+   FACE
+========================================================= */
+
+.face {
+    position: absolute;
+
+    left: 52px;
+    top: 54px;
+
+    width: 156px;
+    height: 155px;
+
+    background: #e5a676;
+
+    border: 5px solid #3c281d;
+
+    z-index: 3;
+}
+
+
+/* Pixel shading on face */
+
+.face::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+
+    width: 18px;
+    height: 62px;
+
+    background: #d39267;
+
+    opacity: .65;
+}
+
+
+/* =========================================================
    GLASSES
-------------------------- */
+========================================================= */
 
 .glasses {
     position: absolute;
 
     left: 42px;
-    top: 99px;
+    top: 100px;
 
-    width: 138px;
-    height: 46px;
+    width: 176px;
+    height: 48px;
 
-    z-index: 10;
+    z-index: 15;
 }
 
 .lens {
     position: absolute;
 
-    width: 57px;
-    height: 40px;
+    top: 0;
 
-    background: rgba(220,235,240,.45);
+    width: 70px;
+    height: 43px;
 
-    border: 5px solid #111;
+    background: rgba(215, 232, 235, .42);
+
+    border: 5px solid #171717;
 }
 
 .lens.left {
@@ -202,16 +301,16 @@ body {
 .bridge {
     position: absolute;
 
-    left: 52px;
+    left: 66px;
     top: 14px;
 
-    width: 34px;
+    width: 45px;
     height: 7px;
 
-    background: #111;
+    background: #171717;
 }
 
-.arm {
+.glass-arm {
     position: absolute;
 
     top: 10px;
@@ -219,192 +318,295 @@ body {
     width: 20px;
     height: 6px;
 
-    background: #111;
+    background: #171717;
 }
 
-.arm.left {
+.glass-arm.left {
     left: -17px;
 }
 
-.arm.right {
+.glass-arm.right {
     right: -17px;
 }
 
-/* Eyes */
+
+/* =========================================================
+   EYES
+========================================================= */
 
 .eye {
     position: absolute;
 
-    top: 114px;
+    top: 116px;
 
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 9px;
 
-    background: #222;
+    background: #171717;
 
-    z-index: 11;
+    z-index: 18;
 }
 
 .eye.left {
-    left: 69px;
+    left: 80px;
 }
 
 .eye.right {
-    left: 144px;
+    left: 171px;
 }
 
-/* Nose */
+
+/* =========================================================
+   NOSE
+========================================================= */
 
 .nose {
     position: absolute;
 
-    left: 103px;
-    top: 136px;
+    left: 119px;
+    top: 139px;
 
-    width: 13px;
-    height: 21px;
+    width: 15px;
+    height: 23px;
 
-    background: #c37e55;
+    background: #c98156;
 
-    z-index: 8;
+    z-index: 12;
 }
 
-/* Mouth */
+
+/* =========================================================
+   MOUTH
+   IMPORTANT:
+   This is ABOVE the beard.
+========================================================= */
 
 .mouth {
     position: absolute;
 
-    left: 91px;
-    top: 167px;
+    left: 101px;
+    top: 168px;
 
-    width: 38px;
-    height: 6px;
+    width: 58px;
+    height: 19px;
 
-    background: #793a35;
+    background: #7a3d35;
 
-    z-index: 8;
+    border: 4px solid #3a241b;
+
+    z-index: 80;
+
+    /*
+       Rounded pixel-art smile.
+    */
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 45%,
+        85% 45%,
+        85% 75%,
+        70% 75%,
+        70% 100%,
+        30% 100%,
+        30% 75%,
+        15% 75%,
+        15% 45%,
+        0 45%
+    );
 }
 
-/* Neck */
+/* Teeth */
+
+.mouth::after {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    top: 2px;
+
+    width: 30px;
+    height: 5px;
+
+    background: #fff3dc;
+}
+
+
+/* =========================================================
+   NECK
+========================================================= */
 
 .neck {
     position: absolute;
 
-    left: 84px;
-    top: 192px;
+    left: 101px;
+    top: 202px;
 
-    width: 52px;
-    height: 45px;
+    width: 58px;
+    height: 47px;
 
-    background: #d8996a;
+    background: #d79668;
 
-    border-left: 4px solid #39251b;
-    border-right: 4px solid #39251b;
+    border-left: 5px solid #3c281d;
+    border-right: 5px solid #3c281d;
 
-    z-index: 1;
+    z-index: 2;
 }
 
-/* Shirt */
+
+/* =========================================================
+   SHIRT / TORSO
+========================================================= */
 
 .shirt {
     position: absolute;
 
-    left: 25px;
-    top: 225px;
+    left: 27px;
+    top: 236px;
 
-    width: 170px;
-    height: 250px;
+    width: 206px;
+    height: 270px;
 
-    background: #26364a;
+    background: #40566c;
 
-    border: 5px solid #17202b;
+    border: 6px solid #273646;
 
     clip-path: polygon(
         27% 0,
         73% 0,
-        100% 17%,
-        90% 100%,
-        10% 100%,
-        0 17%
+        100% 16%,
+        91% 100%,
+        9% 100%,
+        0 16%
     );
 
     z-index: 1;
 }
 
-.shirt-line {
+/* Shirt center */
+
+.shirt::before {
+    content: "";
+
     position: absolute;
 
-    left: 106px;
-    top: 235px;
+    left: 50%;
+    top: 0;
 
-    width: 7px;
-    height: 220px;
+    width: 9px;
+    height: 270px;
 
-    background: #3b4d65;
+    transform: translateX(-50%);
 
-    z-index: 2;
+    background: #526b84;
 }
 
-/* -------------------------
-   BEARD
-------------------------- */
+
+/* =========================================================
+   BEARD TOUCH AREA
+========================================================= */
 
 /*
-   IMPORTANT:
-   The beard has a large invisible touch zone.
-   This sits above the face and catches taps reliably.
+   This is intentionally much larger than the visible beard.
+   It makes tapping the beard extremely reliable on Android.
 */
 
 .beard-touch {
     position: absolute;
 
-    left: 42px;
+    left: 39px;
     top: 145px;
 
-    width: 136px;
-    height: 340px;
+    width: 182px;
+    height: 350px;
 
-    z-index: 50;
+    z-index: 100;
 
     cursor: pointer;
 
     touch-action: manipulation;
 }
 
-/* Actual beard */
+
+/* =========================================================
+   BEARD
+========================================================= */
 
 .beard {
     position: absolute;
 
-    left: 10px;
-    top: 6px;
+    left: 25px;
+    top: 14px;
 
-    width: 116px;
+    width: 132px;
 
-    background: #2a211b;
+    background: #765036;
+
+    border-left: 5px solid #533722;
+    border-right: 5px solid #533722;
 
     transition:
-        height .16s ease,
-        width .16s ease;
+        height .18s ease,
+        width .18s ease;
+
+    image-rendering: pixelated;
+
+    /*
+       More natural beard silhouette.
+    */
 
     clip-path: polygon(
         0 0,
+        16% 0,
+        16% 8%,
+        84% 8%,
+        84% 0,
         100% 0,
-        96% 95%,
-        86% 100%,
-        75% 94%,
+
+        100% 15%,
+        94% 15%,
+        94% 28%,
+
+        88% 28%,
+        88% 48%,
+
+        82% 48%,
+        82% 70%,
+
+        74% 70%,
+        74% 87%,
+
+        63% 87%,
         63% 100%,
+
         50% 94%,
+
         37% 100%,
-        25% 94%,
-        12% 100%,
-        4% 94%
+        37% 87%,
+
+        26% 87%,
+        26% 70%,
+
+        18% 70%,
+        18% 48%,
+
+        12% 48%,
+        12% 28%,
+
+        6% 28%,
+        6% 15%,
+
+        0 15%
     );
 
-    image-rendering: pixelated;
+    z-index: 40;
 }
 
-/* Pixel texture */
+
+/* =========================================================
+   BEARD PIXEL TEXTURE
+========================================================= */
 
 .beard::before {
     content: "";
@@ -414,285 +616,424 @@ body {
     inset: 0;
 
     background:
+
+        /* lighter pixel highlights */
         repeating-linear-gradient(
             90deg,
             transparent 0px,
-            transparent 7px,
-            rgba(0,0,0,.35) 7px,
-            rgba(0,0,0,.35) 11px
+            transparent 9px,
+            rgba(182,133,87,.30) 9px,
+            rgba(182,133,87,.30) 13px,
+            transparent 13px,
+            transparent 19px
         ),
+
+        /* darker hair pixels */
         repeating-linear-gradient(
             0deg,
             transparent 0px,
-            transparent 9px,
-            rgba(255,255,255,.06) 9px,
-            rgba(255,255,255,.06) 13px
+            transparent 12px,
+            rgba(58,38,25,.32) 12px,
+            rgba(58,38,25,.32) 16px
         );
+
+    z-index: 1;
 }
 
-/* Beard stages */
+
+/* Individual beard levels */
 
 .beard.level-1 {
-    height: 25px;
+    height: 28px;
 }
 
 .beard.level-2 {
-    height: 50px;
+    height: 53px;
 }
 
 .beard.level-3 {
-    height: 78px;
+    height: 80px;
 }
 
 .beard.level-4 {
-    height: 108px;
+    height: 112px;
 }
 
 .beard.level-5 {
-    height: 142px;
+    height: 148px;
 }
 
 .beard.level-6 {
-    height: 180px;
+    height: 187px;
 }
 
 .beard.level-7 {
-    height: 220px;
+    height: 228px;
 }
 
 .beard.level-8 {
-    height: 260px;
+    height: 269px;
 }
 
 .beard.level-9 {
-    height: 300px;
+    height: 309px;
 }
 
 .beard.level-10 {
-    height: 340px;
+    height: 347px;
 }
 
-/* -------------------------
+
+/* =========================================================
+   MOUSTACHE
+========================================================= */
+
+.moustache {
+    position: absolute;
+
+    left: 74px;
+    top: 157px;
+
+    width: 86px;
+    height: 24px;
+
+    background: #69462f;
+
+    z-index: 90;
+
+    clip-path: polygon(
+        0 20%,
+        25% 20%,
+        40% 0,
+        50% 25%,
+        60% 0,
+        75% 20%,
+        100% 20%,
+        100% 70%,
+        85% 70%,
+        75% 100%,
+        60% 100%,
+        50% 72%,
+        40% 100%,
+        25% 100%,
+        15% 70%,
+        0 70%
+    );
+}
+
+
+/* =========================================================
    SCISSORS
-------------------------- */
+========================================================= */
 
 .controls {
     position: absolute;
 
-    right: 12px;
-    top: 170px;
+    right: 8px;
+    top: 165px;
 
-    width: 90px;
+    width: 100px;
 
     text-align: center;
 
-    z-index: 80;
+    z-index: 180;
 }
 
 .scissors {
     font-family: Arial, sans-serif;
 
-    font-size: 48px;
+    font-size: 51px;
 
     line-height: 1;
 
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 
     transform: rotate(-12deg);
 }
 
-.cut {
-    border: 4px solid #3b2418;
+.cut-button {
+    border: 4px solid #43291a;
 
-    background: #d6a44a;
+    background: #d8a64b;
 
-    color: #2b1c13;
+    color: #2f1d12;
 
-    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-family:
+        "Comic Sans MS",
+        "Comic Sans",
+        cursive;
 
-    font-size: 18px;
+    font-size: 19px;
+
     font-weight: bold;
 
-    padding: 8px 13px;
+    padding: 8px 15px;
 
     border-radius: 10px;
 
-    box-shadow: 3px 3px 0 #3b2418;
+    box-shadow:
+        4px 4px 0 #43291a;
 
     cursor: pointer;
 
     touch-action: manipulation;
 }
 
-.cut:active {
-    transform: translate(2px,2px);
-    box-shadow: 1px 1px 0 #3b2418;
+.cut-button:active {
+    transform: translate(3px, 3px);
+
+    box-shadow:
+        1px 1px 0 #43291a;
 }
 
-/* -------------------------
+
+/* =========================================================
    COUNTER
-------------------------- */
+========================================================= */
 
 .counter {
     position: absolute;
 
-    bottom: 10px;
     left: 50%;
+    bottom: 9px;
 
     transform: translateX(-50%);
 
-    background: #fff8ec;
+    background: #fff8e9;
 
-    border: 3px solid #3b2418;
+    border: 3px solid #43291a;
 
-    border-radius: 20px;
+    border-radius: 18px;
 
     padding: 5px 14px;
 
-    color: #3b2418;
+    color: #43291a;
 
     font-size: 14px;
 
     white-space: nowrap;
 
-    z-index: 100;
+    z-index: 200;
 }
 
-/* -------------------------
-   TAP ANIMATION
-------------------------- */
+
+/* =========================================================
+   GROW ANIMATION
+========================================================= */
 
 .beard.growing {
-    animation: growTap .16s ease;
+    animation: beardGrow .18s ease;
 }
 
-@keyframes growTap {
+@keyframes beardGrow {
+
     0% {
-        transform: scale(1);
+        transform: scaleY(.96);
+        transform-origin: top;
     }
 
-    50% {
-        transform: scale(1.06);
+    60% {
+        transform: scaleY(1.04);
+        transform-origin: top;
     }
 
     100% {
-        transform: scale(1);
+        transform: scaleY(1);
+        transform-origin: top;
     }
 }
 
-/* -------------------------
-   SMALL SCREENS
-------------------------- */
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
 
 @media (max-width: 390px) {
 
-    .man {
-        top: 83px;
+    .character {
         transform:
             translateX(-50%)
-            scale(.88);
-        transform-origin: top center;
+            scale(.84);
+
+        transform-origin:
+            top center;
     }
 
     .controls {
-        right: 2px;
-        top: 165px;
-        transform: scale(.85);
-        transform-origin: top right;
+        right: 0;
+
+        transform: scale(.82);
+
+        transform-origin:
+            top right;
     }
 }
 
+
+/* =========================================================
+   SHORT SCREENS
+========================================================= */
+
 @media (max-height: 650px) {
 
-    .man {
-        top: 75px;
+    .character {
+        top: 76px;
+
         transform:
             translateX(-50%)
-            scale(.76);
-        transform-origin: top center;
+            scale(.72);
+
+        transform-origin:
+            top center;
     }
 
     .controls {
         top: 145px;
-        transform: scale(.8);
-        transform-origin: top right;
+
+        transform: scale(.78);
+
+        transform-origin:
+            top right;
     }
 }
+
 </style>
 </head>
+
 
 <body>
 
 <div class="game">
 
+
+    <!-- TITLE -->
+
     <div class="title">
         Spencer's Beard
     </div>
 
-    <div class="help">
-        Tap the beard to grow it!
+    <div class="instructions">
+        Tap Spencer's beard to grow it!
     </div>
 
-    <!-- MAN -->
 
-    <div class="man">
+    <!-- =====================================================
+         CHARACTER
+    ====================================================== -->
+
+    <div class="character">
+
+
+        <!-- Hair -->
 
         <div class="hair"></div>
+
+
+        <!-- Ears -->
 
         <div class="ear left"></div>
         <div class="ear right"></div>
 
+
+        <!-- Face -->
+
         <div class="face"></div>
 
+
+        <!-- Glasses -->
+
         <div class="glasses">
+
             <div class="lens left"></div>
             <div class="lens right"></div>
+
             <div class="bridge"></div>
-            <div class="arm left"></div>
-            <div class="arm right"></div>
+
+            <div class="glass-arm left"></div>
+            <div class="glass-arm right"></div>
+
         </div>
+
+
+        <!-- Eyes -->
 
         <div class="eye left"></div>
         <div class="eye right"></div>
 
+
+        <!-- Nose -->
+
         <div class="nose"></div>
 
-        <div class="mouth"></div>
 
-        <div class="neck"></div>
+        <!-- =================================================
+             BEARD TOUCH AREA
+        ================================================== -->
 
-        <div class="shirt"></div>
+        <div
+            id="beardTouch"
+            class="beard-touch"
+            aria-label="Tap to grow beard"
+        >
 
-        <div class="shirt-line"></div>
+            <!-- Beard -->
 
-        <!--
-            LARGE TOUCH AREA
-            This is what makes tapping the beard reliable.
-        -->
-
-        <div id="beardTouch" class="beard-touch">
-
-            <div id="beard" class="beard level-1"></div>
+            <div
+                id="beard"
+                class="beard level-1"
+            ></div>
 
         </div>
 
+
+        <!-- MOUSTACHE -->
+
+        <div class="moustache"></div>
+
+
+        <!-- MOUTH
+             Deliberately positioned ABOVE beard -->
+        <div class="mouth"></div>
+
+
+        <!-- Neck -->
+
+        <div class="neck"></div>
+
+
+        <!-- Shirt -->
+
+        <div class="shirt"></div>
+
     </div>
 
-    <!-- SCISSORS / CUT -->
+
+    <!-- =====================================================
+         SCISSORS
+    ====================================================== -->
 
     <div class="controls">
 
         <div class="scissors">
-            ✂️
+            ✂
         </div>
 
-        <button id="cutButton" class="cut">
+        <button
+            id="cutButton"
+            class="cut-button"
+        >
             CUT
         </button>
 
     </div>
 
-    <div id="counter" class="counter">
+
+    <!-- COUNTER -->
+
+    <div
+        id="counter"
+        class="counter"
+    >
         Beard length: 1 / 10
     </div>
 
@@ -701,27 +1042,39 @@ body {
 
 <script>
 
-/* =====================================================
+/* =========================================================
    SPENCER'S BEARD
-   ===================================================== */
+========================================================= */
 
-const beard = document.getElementById("beard");
-const beardTouch = document.getElementById("beardTouch");
-const cutButton = document.getElementById("cutButton");
-const counter = document.getElementById("counter");
+const beard =
+    document.getElementById("beard");
+
+const beardTouch =
+    document.getElementById("beardTouch");
+
+const cutButton =
+    document.getElementById("cutButton");
+
+const counter =
+    document.getElementById("counter");
+
 
 const MIN_LEVEL = 1;
 const MAX_LEVEL = 10;
 
 
-/* ---------------------------------
+/* =========================================================
    LOAD SAVED BEARD
---------------------------------- */
+========================================================= */
 
-let beardLevel = parseInt(
-    localStorage.getItem("spencersBeardLevel"),
-    10
-);
+let beardLevel =
+    parseInt(
+        localStorage.getItem(
+            "spencersBeardLevel"
+        ),
+        10
+    );
+
 
 if (
     isNaN(beardLevel) ||
@@ -732,41 +1085,53 @@ if (
 }
 
 
-/* ---------------------------------
-   UPDATE BEARD
---------------------------------- */
+/* =========================================================
+   UPDATE DISPLAY
+========================================================= */
 
 function updateBeard() {
 
-    /* Remove old beard levels */
+    /*
+       Remove every possible level.
+    */
 
     for (
         let i = MIN_LEVEL;
         i <= MAX_LEVEL;
         i++
     ) {
+
         beard.classList.remove(
             "level-" + i
         );
+
     }
 
 
-    /* Add current level */
+    /*
+       Apply current level.
+    */
 
     beard.classList.add(
         "level-" + beardLevel
     );
 
 
-    /* Save the beard */
+    /*
+       Save current level.
+       This means the beard stays the same
+       after closing and reopening the app.
+    */
 
     localStorage.setItem(
         "spencersBeardLevel",
-        beardLevel
+        String(beardLevel)
     );
 
 
-    /* Update counter */
+    /*
+       Update counter.
+    */
 
     counter.textContent =
         "Beard length: " +
@@ -776,9 +1141,9 @@ function updateBeard() {
 }
 
 
-/* ---------------------------------
-   GROW BEARD
---------------------------------- */
+/* =========================================================
+   GROW
+========================================================= */
 
 function growBeard() {
 
@@ -788,21 +1153,29 @@ function growBeard() {
 
         updateBeard();
 
-        /* Animation */
 
-        beard.classList.remove("growing");
+        /*
+           Restart animation.
+        */
+
+        beard.classList.remove(
+            "growing"
+        );
 
         void beard.offsetWidth;
 
-        beard.classList.add("growing");
+        beard.classList.add(
+            "growing"
+        );
 
     }
+
 }
 
 
-/* ---------------------------------
-   CUT BEARD
---------------------------------- */
+/* =========================================================
+   CUT
+========================================================= */
 
 function cutBeard() {
 
@@ -813,16 +1186,21 @@ function cutBeard() {
         updateBeard();
 
     }
+
 }
 
 
-/* ---------------------------------
-   BEARD TAP
----------------------------------
+/* =========================================================
+   TAP BEARD
+========================================================= */
 
-   Using both click and pointerup makes
-   this work reliably inside Capacitor.
---------------------------------- */
+/*
+   CLICK is intentionally attached to the LARGE
+   invisible beard-touch area rather than the
+   visible beard itself.
+
+   This makes it much easier to tap on a phone.
+*/
 
 beardTouch.addEventListener(
     "click",
@@ -836,9 +1214,9 @@ beardTouch.addEventListener(
 );
 
 
-/* ---------------------------------
+/* =========================================================
    CUT BUTTON
---------------------------------- */
+========================================================= */
 
 cutButton.addEventListener(
     "click",
@@ -852,9 +1230,9 @@ cutButton.addEventListener(
 );
 
 
-/* ---------------------------------
-   INITIAL DISPLAY
---------------------------------- */
+/* =========================================================
+   START
+========================================================= */
 
 updateBeard();
 
@@ -863,3 +1241,4 @@ updateBeard();
 </body>
 </html>
 ```
+      
