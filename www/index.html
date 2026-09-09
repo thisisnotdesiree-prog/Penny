@@ -1,1 +1,865 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"> <title>Spencer's Beard</title> <style> * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } body { margin: 0; min-height: 100vh; background: #f5ead7; display: flex; justify-content: center; align-items: center; font-family: "Comic Sans MS", "Comic Sans", cursive; overflow: hidden; touch-action: manipulation; } .game { width: 100%; height: 100vh; max-width: 600px; display: flex; flex-direction: column; align-items: center; position: relative; padding: 18px 12px 10px; } h1 { margin: 0 0 8px; font-family: "Comic Sans MS", "Comic Sans", cursive; font-size: clamp(28px, 8vw, 46px); color: #3b2418; text-align: center; text-shadow: 2px 2px #d8c2a7; z-index: 10; } .instructions { font-size: 14px; color: #684b37; margin-bottom: 4px; text-align: center; } /* Main drawing area */ .stage { flex: 1; width: 100%; position: relative; display: flex; justify-content: center; align-items: flex-start; overflow: hidden; } /* Pixel-art man */ .man { position: relative; width: 220px; height: 470px; margin-top: 8px; image-rendering: pixelated; } /* Hair */ .hair { position: absolute; top: 8px; left: 47px; width: 126px; height: 78px; background: #4b2b19; box-shadow: -10px 12px #4b2b19, 10px 8px #4b2b19, -4px -6px #4b2b19, 8px -7px #4b2b19; } .hair::after { content: ""; position: absolute; left: 12px; top: 5px; width: 18px; height: 16px; background: #674027; box-shadow: 32px -4px #674027, 62px 2px #674027, 88px -2px #674027; } /* Face */ .face { position: absolute; top: 58px; left: 50px; width: 120px; height: 142px; background: #e4a878; border: 4px solid #3a2419; box-shadow: inset 0 -7px #d59567; } /* Ears */ .ear-left, .ear-right { position: absolute; top: 110px; width: 18px; height: 38px; background: #d99b6e; border: 4px solid #3a2419; } .ear-left { left: 34px; } .ear-right { right: 34px; } /* Glasses */ .glasses { position: absolute; top: 102px; left: 43px; width: 136px; height: 48px; z-index: 5; } .lens { position: absolute; top: 0; width: 56px; height: 40px; background: rgba(210, 230, 235, 0.55); border: 5px solid #171717; } .lens.left { left: 0; } .lens.right { right: 0; } .bridge { position: absolute; top: 14px; left: 52px; width: 32px; height: 7px; background: #171717; } .arm { position: absolute; top: 10px; width: 20px; height: 6px; background: #171717; } .arm.left { left: -16px; } .arm.right { right: -16px; } /* Eyes */ .eye { position: absolute; top: 116px; width: 8px; height: 8px; background: #222; z-index: 6; } .eye.left { left: 69px; } .eye.right { left: 142px; } /* Nose */ .nose { position: absolute; top: 137px; left: 104px; width: 12px; height: 20px; background: #c27f56; z-index: 4; } /* Mouth */ .mouth { position: absolute; top: 168px; left: 91px; width: 38px; height: 6px; background: #7e3d36; z-index: 5; } /* Neck */ .neck { position: absolute; top: 194px; left: 84px; width: 52px; height: 42px; background: #d99b6e; border-left: 4px solid #3a2419; border-right: 4px solid #3a2419; } /* Shirt / torso */ .shirt { position: absolute; top: 224px; left: 25px; width: 170px; height: 240px; background: #202c3d; border: 5px solid #171c26; clip-path: polygon( 28% 0, 72% 0, 100% 18%, 90% 100%, 10% 100%, 0 18% ); } .shirt-detail { position: absolute; top: 232px; left: 101px; width: 8px; height: 215px; background: #34455c; z-index: 2; } /* Beard */ .beard { position: absolute; top: 151px; left: 52px; width: 116px; height: 25px; z-index: 7; cursor: pointer; transition: height 0.15s ease; } /* Each beard level is created with a repeating pixel pattern. The beard grows downward as the level increases. */ .beard::before { content: ""; position: absolute; top: 0; left: 0; width: 116px; height: 100%; background: linear-gradient(90deg, #2b211b 0 8px, transparent 8px 12px, #2b211b 12px 20px, transparent 20px 25px, #2b211b 25px 34px, transparent 34px 38px, #2b211b 38px 47px, transparent 47px 51px, #2b211b 51px 60px, transparent 60px 65px, #2b211b 65px 74px, transparent 74px 78px, #2b211b 78px 87px, transparent 87px 92px, #2b211b 92px 101px, transparent 101px 106px, #2b211b 106px 116px ); image-rendering: pixelated; } /* Beard level classes */ .beard.level-1 { height: 25px; } .beard.level-2 { height: 43px; } .beard.level-3 { height: 65px; } .beard.level-4 { height: 90px; } .beard.level-5 { height: 120px; } .beard.level-6 { height: 155px; } .beard.level-7 { height: 195px; } .beard.level-8 { height: 235px; } .beard.level-9 { height: 275px; } .beard.level-10 { height: 315px; } /* Side pieces make the beard look fuller */ .beard::after { content: ""; position: absolute; left: 4px; top: 12px; width: 108px; height: calc(100% - 12px); background: #2b211b; clip-path: polygon( 0 0, 100% 0, 94% 100%, 78% 100%, 72% 92%, 58% 100%, 43% 92%, 28% 100%, 10% 96% ); z-index: -1; } /* Scissors */ .controls { position: absolute; right: 5px; top: 135px; width: 90px; display: flex; flex-direction: column; align-items: center; z-index: 20; } .scissors { font-family: Arial, sans-serif; font-size: 52px; line-height: 1; transform: rotate(-15deg); margin-bottom: 8px; } .cut-button { border: 4px solid #3b2418; background: #d7a84b; color: #291b12; font-family: "Comic Sans MS", "Comic Sans", cursive; font-size: 20px; font-weight: bold; padding: 8px 14px; border-radius: 10px; box-shadow: 3px 3px 0 #3b2418; cursor: pointer; } .cut-button:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #3b2418; } /* Counter */ .counter { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); background: #fff8eb; border: 3px solid #3b2418; padding: 5px 14px; border-radius: 20px; color: #3b2418; font-size: 15px; z-index: 30; white-space: nowrap; } @media (max-width: 380px) { .man { transform: scale(0.85); transform-origin: top center; } .controls { right: -3px; transform: scale(0.85); transform-origin: top right; } } </style> </head> <body> <div class="game"> <h1>Spencer's Beard</h1> <div class="instructions"> Tap the beard to grow it! </div> <div class="stage"> <div class="man"> <div class="hair"></div> <div class="ear-left"></div> <div class="ear-right"></div> <div class="face"></div> <div class="glasses"> <div class="lens left"></div> <div class="lens right"></div> <div class="bridge"></div> <div class="arm left"></div> <div class="arm right"></div> </div> <div class="eye left"></div> <div class="eye right"></div> <div class="nose"></div> <div class="mouth"></div> <div class="neck"></div> <div class="shirt"></div> <div class="shirt-detail"></div> <!-- BEARD --> <div id="beard" class="beard level-1" aria-label="Tap beard to grow"></div> </div> <!-- CUTTING CONTROLS --> <div class="controls"> <div class="scissors">✂️</div> <button id="cutButton" class="cut-button"> CUT </button> </div> </div> <div id="counter" class="counter"> Beard length: 1 / 10 </div> </div> <script> /* * Spencer's Beard * Beard length is saved using localStorage. */ const beard = document.getElementById("beard"); const cutButton = document.getElementById("cutButton"); const counter = document.getElementById("counter"); const MAX_LEVEL = 10; const MIN_LEVEL = 1; // Load saved beard length. let beardLevel = parseInt( localStorage.getItem("spencersBeardLevel"), 10 ); // If nothing has been saved yet, start at level 1. if ( isNaN(beardLevel) || beardLevel < MIN_LEVEL || beardLevel > MAX_LEVEL ) { beardLevel = MIN_LEVEL; } function updateBeard() { // Remove all old level classes. for (let i = MIN_LEVEL; i <= MAX_LEVEL; i++) { beard.classList.remove("level-" + i); } // Add the current level. beard.classList.add("level-" + beardLevel); // Save it permanently on this device. localStorage.setItem( "spencersBeardLevel", beardLevel ); // Update counter. counter.textContent = "Beard length: " + beardLevel + " / " + MAX_LEVEL; } // Tapping the beard grows it. beard.addEventListener("click", function () { if (beardLevel < MAX_LEVEL) { beardLevel++; updateBeard(); } else { // Small visual feedback at maximum. beard.animate( [ { transform: "scale(1)" }, { transform: "scale(1.04)" }, { transform: "scale(1)" } ], { duration: 180 } ); } }); // Cut button shortens the beard. cutButton.addEventListener("click", function () { if (beardLevel > MIN_LEVEL) { beardLevel--; updateBeard(); } else { // Small visual feedback when already shortest. cutButton.animate( [ { transform: "translateX(0)" }, { transform: "translateX(-3px)" }, { transform: "translateX(3px)" }, { transform: "translateX(0)" } ], { duration: 180 } ); } }); // Display the saved beard when the app opens. updateBeard(); </script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0,
+               maximum-scale=1.0, user-scalable=no">
+
+<title>Spencer's Beard</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background: #f4e5ce;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    touch-action: manipulation;
+}
+
+/* -------------------------
+   GAME
+------------------------- */
+
+.game {
+    width: 100%;
+    height: 100vh;
+    max-width: 600px;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.title {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+    font-size: clamp(28px, 8vw, 44px);
+    font-weight: bold;
+    color: #3a2418;
+    text-shadow: 2px 2px #d2b896;
+    z-index: 100;
+}
+
+.help {
+    position: absolute;
+    top: 61px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: #684a35;
+    font-size: 14px;
+    z-index: 100;
+}
+
+/* -------------------------
+   MAN
+------------------------- */
+
+.man {
+    position: absolute;
+    width: 220px;
+    height: 510px;
+
+    left: 50%;
+    top: 88px;
+
+    transform: translateX(-50%);
+
+    image-rendering: pixelated;
+}
+
+/* Hair */
+
+.hair {
+    position: absolute;
+    left: 48px;
+    top: 4px;
+    width: 124px;
+    height: 70px;
+
+    background: #4b2b19;
+
+    box-shadow:
+        -8px 12px #4b2b19,
+        8px 8px #4b2b19,
+        -2px -5px #4b2b19,
+        18px -7px #4b2b19,
+        44px -8px #4b2b19,
+        72px -4px #4b2b19;
+}
+
+.hair::after {
+    content: "";
+    position: absolute;
+
+    left: 12px;
+    top: 8px;
+
+    width: 18px;
+    height: 13px;
+
+    background: #6a4327;
+
+    box-shadow:
+        30px -3px #6a4327,
+        59px 2px #6a4327,
+        87px -2px #6a4327;
+}
+
+/* Face */
+
+.face {
+    position: absolute;
+
+    left: 50px;
+    top: 54px;
+
+    width: 120px;
+    height: 142px;
+
+    background: #e3a575;
+
+    border: 4px solid #39251b;
+
+    z-index: 2;
+}
+
+/* Ears */
+
+.ear {
+    position: absolute;
+
+    top: 106px;
+
+    width: 19px;
+    height: 39px;
+
+    background: #d79668;
+
+    border: 4px solid #39251b;
+
+    z-index: 1;
+}
+
+.ear.left {
+    left: 34px;
+}
+
+.ear.right {
+    right: 34px;
+}
+
+/* -------------------------
+   GLASSES
+------------------------- */
+
+.glasses {
+    position: absolute;
+
+    left: 42px;
+    top: 99px;
+
+    width: 138px;
+    height: 46px;
+
+    z-index: 10;
+}
+
+.lens {
+    position: absolute;
+
+    width: 57px;
+    height: 40px;
+
+    background: rgba(220,235,240,.45);
+
+    border: 5px solid #111;
+}
+
+.lens.left {
+    left: 0;
+}
+
+.lens.right {
+    right: 0;
+}
+
+.bridge {
+    position: absolute;
+
+    left: 52px;
+    top: 14px;
+
+    width: 34px;
+    height: 7px;
+
+    background: #111;
+}
+
+.arm {
+    position: absolute;
+
+    top: 10px;
+
+    width: 20px;
+    height: 6px;
+
+    background: #111;
+}
+
+.arm.left {
+    left: -17px;
+}
+
+.arm.right {
+    right: -17px;
+}
+
+/* Eyes */
+
+.eye {
+    position: absolute;
+
+    top: 114px;
+
+    width: 7px;
+    height: 7px;
+
+    background: #222;
+
+    z-index: 11;
+}
+
+.eye.left {
+    left: 69px;
+}
+
+.eye.right {
+    left: 144px;
+}
+
+/* Nose */
+
+.nose {
+    position: absolute;
+
+    left: 103px;
+    top: 136px;
+
+    width: 13px;
+    height: 21px;
+
+    background: #c37e55;
+
+    z-index: 8;
+}
+
+/* Mouth */
+
+.mouth {
+    position: absolute;
+
+    left: 91px;
+    top: 167px;
+
+    width: 38px;
+    height: 6px;
+
+    background: #793a35;
+
+    z-index: 8;
+}
+
+/* Neck */
+
+.neck {
+    position: absolute;
+
+    left: 84px;
+    top: 192px;
+
+    width: 52px;
+    height: 45px;
+
+    background: #d8996a;
+
+    border-left: 4px solid #39251b;
+    border-right: 4px solid #39251b;
+
+    z-index: 1;
+}
+
+/* Shirt */
+
+.shirt {
+    position: absolute;
+
+    left: 25px;
+    top: 225px;
+
+    width: 170px;
+    height: 250px;
+
+    background: #26364a;
+
+    border: 5px solid #17202b;
+
+    clip-path: polygon(
+        27% 0,
+        73% 0,
+        100% 17%,
+        90% 100%,
+        10% 100%,
+        0 17%
+    );
+
+    z-index: 1;
+}
+
+.shirt-line {
+    position: absolute;
+
+    left: 106px;
+    top: 235px;
+
+    width: 7px;
+    height: 220px;
+
+    background: #3b4d65;
+
+    z-index: 2;
+}
+
+/* -------------------------
+   BEARD
+------------------------- */
+
+/*
+   IMPORTANT:
+   The beard has a large invisible touch zone.
+   This sits above the face and catches taps reliably.
+*/
+
+.beard-touch {
+    position: absolute;
+
+    left: 42px;
+    top: 145px;
+
+    width: 136px;
+    height: 340px;
+
+    z-index: 50;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+/* Actual beard */
+
+.beard {
+    position: absolute;
+
+    left: 10px;
+    top: 6px;
+
+    width: 116px;
+
+    background: #2a211b;
+
+    transition:
+        height .16s ease,
+        width .16s ease;
+
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        96% 95%,
+        86% 100%,
+        75% 94%,
+        63% 100%,
+        50% 94%,
+        37% 100%,
+        25% 94%,
+        12% 100%,
+        4% 94%
+    );
+
+    image-rendering: pixelated;
+}
+
+/* Pixel texture */
+
+.beard::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 7px,
+            rgba(0,0,0,.35) 7px,
+            rgba(0,0,0,.35) 11px
+        ),
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 9px,
+            rgba(255,255,255,.06) 9px,
+            rgba(255,255,255,.06) 13px
+        );
+}
+
+/* Beard stages */
+
+.beard.level-1 {
+    height: 25px;
+}
+
+.beard.level-2 {
+    height: 50px;
+}
+
+.beard.level-3 {
+    height: 78px;
+}
+
+.beard.level-4 {
+    height: 108px;
+}
+
+.beard.level-5 {
+    height: 142px;
+}
+
+.beard.level-6 {
+    height: 180px;
+}
+
+.beard.level-7 {
+    height: 220px;
+}
+
+.beard.level-8 {
+    height: 260px;
+}
+
+.beard.level-9 {
+    height: 300px;
+}
+
+.beard.level-10 {
+    height: 340px;
+}
+
+/* -------------------------
+   SCISSORS
+------------------------- */
+
+.controls {
+    position: absolute;
+
+    right: 12px;
+    top: 170px;
+
+    width: 90px;
+
+    text-align: center;
+
+    z-index: 80;
+}
+
+.scissors {
+    font-family: Arial, sans-serif;
+
+    font-size: 48px;
+
+    line-height: 1;
+
+    margin-bottom: 10px;
+
+    transform: rotate(-12deg);
+}
+
+.cut {
+    border: 4px solid #3b2418;
+
+    background: #d6a44a;
+
+    color: #2b1c13;
+
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    padding: 8px 13px;
+
+    border-radius: 10px;
+
+    box-shadow: 3px 3px 0 #3b2418;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+.cut:active {
+    transform: translate(2px,2px);
+    box-shadow: 1px 1px 0 #3b2418;
+}
+
+/* -------------------------
+   COUNTER
+------------------------- */
+
+.counter {
+    position: absolute;
+
+    bottom: 10px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    background: #fff8ec;
+
+    border: 3px solid #3b2418;
+
+    border-radius: 20px;
+
+    padding: 5px 14px;
+
+    color: #3b2418;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    z-index: 100;
+}
+
+/* -------------------------
+   TAP ANIMATION
+------------------------- */
+
+.beard.growing {
+    animation: growTap .16s ease;
+}
+
+@keyframes growTap {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.06);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* -------------------------
+   SMALL SCREENS
+------------------------- */
+
+@media (max-width: 390px) {
+
+    .man {
+        top: 83px;
+        transform:
+            translateX(-50%)
+            scale(.88);
+        transform-origin: top center;
+    }
+
+    .controls {
+        right: 2px;
+        top: 165px;
+        transform: scale(.85);
+        transform-origin: top right;
+    }
+}
+
+@media (max-height: 650px) {
+
+    .man {
+        top: 75px;
+        transform:
+            translateX(-50%)
+            scale(.76);
+        transform-origin: top center;
+    }
+
+    .controls {
+        top: 145px;
+        transform: scale(.8);
+        transform-origin: top right;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="game">
+
+    <div class="title">
+        Spencer's Beard
+    </div>
+
+    <div class="help">
+        Tap the beard to grow it!
+    </div>
+
+    <!-- MAN -->
+
+    <div class="man">
+
+        <div class="hair"></div>
+
+        <div class="ear left"></div>
+        <div class="ear right"></div>
+
+        <div class="face"></div>
+
+        <div class="glasses">
+            <div class="lens left"></div>
+            <div class="lens right"></div>
+            <div class="bridge"></div>
+            <div class="arm left"></div>
+            <div class="arm right"></div>
+        </div>
+
+        <div class="eye left"></div>
+        <div class="eye right"></div>
+
+        <div class="nose"></div>
+
+        <div class="mouth"></div>
+
+        <div class="neck"></div>
+
+        <div class="shirt"></div>
+
+        <div class="shirt-line"></div>
+
+        <!--
+            LARGE TOUCH AREA
+            This is what makes tapping the beard reliable.
+        -->
+
+        <div id="beardTouch" class="beard-touch">
+
+            <div id="beard" class="beard level-1"></div>
+
+        </div>
+
+    </div>
+
+    <!-- SCISSORS / CUT -->
+
+    <div class="controls">
+
+        <div class="scissors">
+            ✂️
+        </div>
+
+        <button id="cutButton" class="cut">
+            CUT
+        </button>
+
+    </div>
+
+    <div id="counter" class="counter">
+        Beard length: 1 / 10
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SPENCER'S BEARD
+   ===================================================== */
+
+const beard = document.getElementById("beard");
+const beardTouch = document.getElementById("beardTouch");
+const cutButton = document.getElementById("cutButton");
+const counter = document.getElementById("counter");
+
+const MIN_LEVEL = 1;
+const MAX_LEVEL = 10;
+
+
+/* ---------------------------------
+   LOAD SAVED BEARD
+--------------------------------- */
+
+let beardLevel = parseInt(
+    localStorage.getItem("spencersBeardLevel"),
+    10
+);
+
+if (
+    isNaN(beardLevel) ||
+    beardLevel < MIN_LEVEL ||
+    beardLevel > MAX_LEVEL
+) {
+    beardLevel = MIN_LEVEL;
+}
+
+
+/* ---------------------------------
+   UPDATE BEARD
+--------------------------------- */
+
+function updateBeard() {
+
+    /* Remove old beard levels */
+
+    for (
+        let i = MIN_LEVEL;
+        i <= MAX_LEVEL;
+        i++
+    ) {
+        beard.classList.remove(
+            "level-" + i
+        );
+    }
+
+
+    /* Add current level */
+
+    beard.classList.add(
+        "level-" + beardLevel
+    );
+
+
+    /* Save the beard */
+
+    localStorage.setItem(
+        "spencersBeardLevel",
+        beardLevel
+    );
+
+
+    /* Update counter */
+
+    counter.textContent =
+        "Beard length: " +
+        beardLevel +
+        " / " +
+        MAX_LEVEL;
+}
+
+
+/* ---------------------------------
+   GROW BEARD
+--------------------------------- */
+
+function growBeard() {
+
+    if (beardLevel < MAX_LEVEL) {
+
+        beardLevel++;
+
+        updateBeard();
+
+        /* Animation */
+
+        beard.classList.remove("growing");
+
+        void beard.offsetWidth;
+
+        beard.classList.add("growing");
+
+    }
+}
+
+
+/* ---------------------------------
+   CUT BEARD
+--------------------------------- */
+
+function cutBeard() {
+
+    if (beardLevel > MIN_LEVEL) {
+
+        beardLevel--;
+
+        updateBeard();
+
+    }
+}
+
+
+/* ---------------------------------
+   BEARD TAP
+---------------------------------
+
+   Using both click and pointerup makes
+   this work reliably inside Capacitor.
+--------------------------------- */
+
+beardTouch.addEventListener(
+    "click",
+    function(event) {
+
+        event.preventDefault();
+
+        growBeard();
+
+    }
+);
+
+
+/* ---------------------------------
+   CUT BUTTON
+--------------------------------- */
+
+cutButton.addEventListener(
+    "click",
+    function(event) {
+
+        event.preventDefault();
+
+        cutBeard();
+
+    }
+);
+
+
+/* ---------------------------------
+   INITIAL DISPLAY
+--------------------------------- */
+
+updateBeard();
+
+</script>
+
+</body>
+</html>
+```
